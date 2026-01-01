@@ -32,21 +32,21 @@ export default function Home() {
             gian."
           </p>
 
-          <div className="flex flex-col items-center gap-8 pt-4">
+          <div className="flex flex-col items-center gap-6 md:gap-8 pt-4 w-full max-w-md mx-auto px-4">
             <Link
               href="/plan"
-              className="group flex items-center gap-4 px-10 py-5 bg-foreground text-background rounded-full hover:opacity-90 transition-all duration-700 ease-in-out shadow-sm border border-foreground/5 romantic-glow-hover sparkle-hover relative overflow-hidden"
+              className="group flex items-center justify-center gap-4 px-8 md:px-10 py-4 md:py-5 bg-foreground text-background rounded-full hover:opacity-90 transition-all duration-700 ease-in-out shadow-lg hover:shadow-xl border-2 border-foreground/10 romantic-glow-hover sparkle-hover relative overflow-hidden w-full min-h-[56px] active:scale-[0.98]"
             >
-              <span className="text-sm font-medium tracking-widest uppercase relative z-10">Mở xem kế hoạch</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500 relative z-10" />
+              <span className="text-sm font-semibold tracking-widest uppercase relative z-10">Mở xem kế hoạch</span>
+              <ArrowRight className="w-5 h-5 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform duration-500 relative z-10" />
             </Link>
 
             <Link
               href="/selections"
-              className="group flex items-center gap-4 px-10 py-5 bg-transparent text-foreground rounded-full hover:bg-foreground/5 transition-all duration-700 ease-in-out border border-foreground/20 hover:border-foreground/40 relative overflow-hidden"
+              className="group flex items-center justify-center gap-4 px-8 md:px-10 py-4 md:py-5 bg-transparent text-foreground rounded-full hover:bg-foreground/10 transition-all duration-700 ease-in-out border-2 border-foreground/30 hover:border-foreground/50 relative overflow-hidden w-full min-h-[56px] active:scale-[0.98]"
             >
-              <span className="text-sm font-medium tracking-widest uppercase relative z-10">Xem kế hoạch đã lưu</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500 relative z-10" />
+              <span className="text-sm font-semibold tracking-widest uppercase relative z-10">Xem kế hoạch đã lưu</span>
+              <ArrowRight className="w-5 h-5 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform duration-500 relative z-10" />
             </Link>
 
             <p className="text-[9px] uppercase tracking-[0.5em] text-muted-foreground/50">Only for you</p>

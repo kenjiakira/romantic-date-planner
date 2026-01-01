@@ -325,26 +325,26 @@ function PlanPageContent() {
 
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-0" />
 
-      <div className="max-w-4xl mx-auto px-6 py-16 md:py-24 relative z-10">
-        <header className="mb-20 space-y-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 lg:py-24 relative z-10">
+        <header className="mb-12 md:mb-20 space-y-8 md:space-y-12">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground/80 hover:text-primary transition-colors duration-500"
+            className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground/80 hover:text-primary transition-colors duration-500 py-2"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-500" />
             Quay lại lời mời
           </Link>
 
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-6xl font-light italic leading-tight romantic-glow-text">Gửi em, một cuối tuần tự do</h1>
-            <p className="font-sans text-base tracking-widest uppercase text-muted-foreground/80 animate-romantic-pulse">
+          <div className="space-y-3 md:space-y-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light italic leading-tight romantic-glow-text">Gửi em, một cuối tuần tự do</h1>
+            <p className="font-sans text-sm md:text-base tracking-widest uppercase text-muted-foreground/80 animate-romantic-pulse">
               Mọi sự lựa chọn đều là của em.
             </p>
           </div>
 
           <WeatherDisplay />
 
-          <section className="pt-8 pb-8 border-t border-border/20 space-y-6">
+          <section className="pt-6 md:pt-8 pb-6 md:pb-8 border-t border-border/20 space-y-4 md:space-y-6">
             <div>
               <CountdownTimer />
             </div>
@@ -363,7 +363,7 @@ function PlanPageContent() {
           />
         </header>
 
-        <section className="space-y-16">
+        <section className="space-y-12 md:space-y-16">
           <LocationPicker
             locations={locations}
             selectedLocations={selectedLocations[activeDay]}
@@ -391,18 +391,18 @@ function PlanPageContent() {
           onRemoveIdea={removeIdea}
         />
 
-        <section className="mt-48 space-y-16">
-          <div className="space-y-4 text-center">
+        <section className="mt-24 md:mt-48 space-y-12 md:space-y-16">
+          <div className="space-y-3 md:space-y-4 text-center px-4">
             <h3 className="text-xs uppercase tracking-[0.4em] text-muted-foreground/80 font-medium">
               Chuẩn Bị
             </h3>
-            <h2 className="text-4xl font-light italic">Để mọi thứ diễn ra suôn sẻ</h2>
-            <p className="text-base text-muted-foreground/80 font-sans max-w-sm mx-auto">
+            <h2 className="text-3xl md:text-4xl font-light italic">Để mọi thứ diễn ra suôn sẻ</h2>
+            <p className="text-sm md:text-base text-muted-foreground/80 font-sans max-w-sm mx-auto">
               Checklist đồ cần mang để không bỏ lỡ bất kỳ khoảnh khắc nào.
             </p>
           </div>
 
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto px-4 md:px-0">
             <PreparationChecklist
               selectedLocations={[...selectedLocations.saturday, ...selectedLocations.sunday]}
               getLocationById={getLocationById}

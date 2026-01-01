@@ -94,16 +94,16 @@ export function FoodMoodsSelector({
   }
 
   return (
-    <section className="mt-48 space-y-16">
-      <div className="space-y-4 text-center">
+    <section className="mt-24 md:mt-48 space-y-12 md:space-y-16">
+      <div className="space-y-3 md:space-y-4 text-center">
         <h3 className="text-xs uppercase tracking-[0.4em] text-muted-foreground/80 font-medium">Gợi Ý Vị Giác</h3>
-        <h2 className="text-4xl font-light italic">Cuối tuần này em muốn "ăn" điều gì?</h2>
-        <p className="text-base text-muted-foreground/80 font-sans max-w-sm mx-auto">
+        <h2 className="text-3xl md:text-4xl font-light italic">Cuối tuần này em muốn "ăn" điều gì?</h2>
+        <p className="text-sm md:text-base text-muted-foreground/80 font-sans max-w-sm mx-auto px-4">
           Chọn những món ăn phù hợp với tâm trạng và cảm xúc em muốn có cho cuối tuần này.
         </p>
       </div>
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto"
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 max-w-2xl mx-auto px-4 md:px-0"
         role="group"
         aria-label="Lựa chọn vị giác"
       >
@@ -115,33 +115,33 @@ export function FoodMoodsSelector({
               onClick={() => onToggleMood(mood.id)}
               aria-pressed={isSelected}
               aria-label={`${mood.label}: ${mood.flavor}${isSelected ? " (đã chọn)" : ""}`}
-              className={`group relative p-8 rounded-[2.5rem] overflow-hidden transition-all duration-700 text-left sparkle-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 ${
+              className={`group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] overflow-hidden transition-all duration-700 text-left sparkle-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 border-2 min-h-[140px] md:min-h-[160px] ${
                 isSelected
-                  ? "scale-[1.02] romantic-glow"
-                  : "hover:scale-[1.01] glass-romantic"
+                  ? "scale-[1.02] romantic-glow border-primary/40 shadow-lg bg-accent/20"
+                  : "hover:scale-[1.01] glass-romantic border-border/50 hover:border-primary/30 active:scale-[0.98]"
               }`}
             >
               <div
                 className={`absolute inset-0 opacity-10 transition-opacity duration-700 ${mood.color} ${
-                  isSelected ? "opacity-20" : "group-hover:opacity-15"
+                  isSelected ? "opacity-25" : "group-hover:opacity-18"
                 }`}
                 aria-hidden="true"
               />
               <div className="relative z-10 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm tracking-widest uppercase font-sans text-muted-foreground/90 font-medium">
+                  <span className="text-sm md:text-sm tracking-widest uppercase font-sans text-muted-foreground/90 font-semibold">
                     {mood.label}
                   </span>
                   {isSelected && (
-                    <Heart className="w-4 h-4 text-primary fill-primary" aria-hidden="true" />
+                    <Heart className="w-5 h-5 md:w-4 md:h-4 text-primary fill-primary" aria-hidden="true" />
                   )}
                 </div>
-                <p className="text-lg italic font-light leading-snug">{mood.flavor}</p>
+                <p className="text-base md:text-lg italic font-light leading-snug">{mood.flavor}</p>
               </div>
               {isSelected && (
                 <motion.div
                   layoutId={`mood-border-${mood.id}`}
-                  className="absolute inset-0 border border-primary/20 rounded-[2.5rem]"
+                  className="absolute inset-0 border-2 border-primary/40 rounded-3xl md:rounded-[2.5rem]"
                   aria-hidden="true"
                 />
               )}
@@ -150,11 +150,11 @@ export function FoodMoodsSelector({
         })}
       </div>
 
-      <div className="max-w-md mx-auto space-y-8 pt-8">
+      <div className="max-w-md mx-auto space-y-6 md:space-y-8 pt-6 md:pt-8 px-4 md:px-0">
         <div className="space-y-4">
           {customIdeas.length > 0 && (
             <div
-              className="flex flex-wrap gap-3 justify-center"
+              className="flex flex-wrap gap-2 md:gap-3 justify-center"
               role="list"
               aria-label="Danh sách món ăn tùy chỉnh"
             >
@@ -165,16 +165,16 @@ export function FoodMoodsSelector({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="px-4 py-2 rounded-full bg-accent/30 border border-primary/5 text-xs uppercase tracking-widest font-sans font-medium flex items-center gap-2 group"
+                    className="px-4 py-2.5 rounded-full bg-accent/40 border-2 border-primary/20 text-xs uppercase tracking-widest font-sans font-semibold flex items-center gap-2 group"
                     role="listitem"
                   >
                     <span>{idea}</span>
                     <button
                       onClick={() => onRemoveIdea(i)}
                       aria-label={`Xóa ${idea}`}
-                      className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 rounded"
+                      className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 rounded p-0.5 active:scale-95"
                     >
-                      <X className="w-3 h-3" aria-hidden="true" />
+                      <X className="w-4 h-4" aria-hidden="true" />
                     </button>
                   </motion.span>
                 ))}
@@ -199,23 +199,23 @@ export function FoodMoodsSelector({
                 aria-label="Thêm món ăn tùy chỉnh"
                 aria-invalid={error ? "true" : "false"}
                 aria-describedby={error ? "idea-error idea-help" : "idea-help"}
-                className={`w-full bg-transparent border-b py-4 px-2 text-base italic font-light focus:outline-none transition-colors placeholder:text-muted-foreground/70 pr-10 ${
+                className={`w-full bg-transparent border-b-2 py-4 px-2 text-base md:text-base italic font-light focus:outline-none transition-colors placeholder:text-muted-foreground/70 pr-12 ${
                   error
                     ? "border-destructive/50 focus:border-destructive/70"
-                    : "border-border/50 focus:border-primary/50"
+                    : "border-border/50 focus:border-primary/60"
                 }`}
               />
               <button
                 type="submit"
                 disabled={!canSubmit}
                 aria-label="Thêm món ăn"
-                className={`absolute right-2 top-1/2 -translate-y-1/2 transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 rounded ${
+                className={`absolute right-2 top-1/2 -translate-y-1/2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center ${
                   canSubmit
-                    ? "text-muted-foreground/70 hover:text-primary cursor-pointer"
+                    ? "text-muted-foreground/70 hover:text-primary hover:bg-accent/20 cursor-pointer active:scale-95"
                     : "text-muted-foreground/30 cursor-not-allowed"
                 }`}
               >
-                <Plus className="w-4 h-4" aria-hidden="true" />
+                <Plus className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
             <div className="flex items-center justify-between px-2 text-xs">
