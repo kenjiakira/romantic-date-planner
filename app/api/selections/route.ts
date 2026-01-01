@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
-    const { feeling, selectedMoods, customIdeas, selectedLocations, checklist } = body
+    const { feeling, selectedMoods, selectedCuisines, customIdeas, selectedLocations, checklist } = body
 
     if (!selectedLocations) {
       return NextResponse.json(
@@ -74,19 +74,45 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Kiểm tra nếu đang tạo thứ 7, xem đã có thứ 7 trong DB chưa
-    if (selectedLocations.saturday && selectedLocations.saturday.length > 0) {
+    const hasSaturday = selectedLocations.saturday && selectedLocations.saturday.length > 0
+    const hasSunday = selectedLocations.sunday && selectedLocations.sunday.length > 0
+    
+    let planDay: string | null = null
+    if (hasSaturday && hasSunday) {
+      planDay = "both"
+    } else if (hasSaturday) {
+      planDay = "saturday"
+    } else if (hasSunday) {
+      planDay = "sunday"
+    }
+
+    if (planDay) {
       const { data: existingSelections } = await supabase
         .from("selections")
-        .select("selected_locations")
+        .select("plan_day")
       
-      const hasSaturdayInDB = existingSelections?.some((sel: any) => 
-        sel.selected_locations?.saturday && sel.selected_locations.saturday.length > 0
-      )
+      const hasDuplicate = existingSelections?.some((sel: any) => {
+        if (!sel.plan_day) return false
 
-      if (hasSaturdayInDB) {
+        if (planDay === "both") {
+          return sel.plan_day === "both" || sel.plan_day === "saturday" || sel.plan_day === "sunday"
+        }
+        
+        if (planDay === "saturday") {
+          return sel.plan_day === "saturday" || sel.plan_day === "both"
+        }
+        
+        if (planDay === "sunday") {
+          return sel.plan_day === "sunday" || sel.plan_day === "both"
+        }
+        
+        return false
+      })
+
+      if (hasDuplicate) {
+        const dayLabel = planDay === "saturday" ? "thứ 7" : planDay === "sunday" ? "chủ nhật" : "cả hai ngày"
         return NextResponse.json(
-          { error: "Đã có thứ 7 trong database. Chỉ có thể tạo thêm chủ nhật." },
+          { error: `Đã có plan cho ${dayLabel} trong database. Vui lòng chỉnh sửa plan hiện có hoặc xóa plan cũ trước.` },
           { status: 400 }
         )
       }
@@ -97,12 +123,14 @@ export async function POST(request: NextRequest) {
       .insert({
         feeling: feeling || null,
         selected_moods: selectedMoods || [],
+        selected_cuisines: selectedCuisines || [],
         custom_ideas: customIdeas || [],
         selected_locations: selectedLocations || {
           saturday: [],
           sunday: [],
         },
         checklist: checklist || { items: [], checkedItems: [] },
+        plan_day: planDay,
       })
       .select()
       .single()

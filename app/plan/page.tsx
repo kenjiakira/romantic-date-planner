@@ -9,7 +9,6 @@ import { ArrowLeft, Heart } from "lucide-react"
 import Link from "next/link"
 import { FloatingParticles } from "@/components/FloatingParticles"
 import { ConfettiCelebration } from "@/components/ConfettiCelebration"
-import { WeatherDisplay } from "@/components/WeatherDisplay"
 import { CountdownTimer } from "@/components/CountdownTimer"
 import { PreparationChecklist } from "@/components/PreparationChecklist"
 import { FeelingSelector } from "@/components/FeelingSelector"
@@ -35,7 +34,7 @@ const generateAutoTime = (
   day: "saturday" | "sunday"
 ): string => {
   if (location.category === "safe_place" || location.tags.includes("base")) {
-    if (index === 0) return "Buổi sáng"
+    if (index === 0) return "buổi chiều"
     if (index === totalLocations - 1) return "Buổi tối"
     return "Cả buổi chiều"
   }
@@ -92,6 +91,7 @@ function PlanPageContent() {
   const [activeDay, setActiveDay] = useState<"saturday" | "sunday">("saturday")
   const [feeling, setFeeling] = useState<string | null>(null)
   const [selectedMoods, setSelectedMoods] = useState<string[]>([])
+  const [selectedCuisines, setSelectedCuisines] = useState<string[]>([])
   const [customIdeas, setCustomIdeas] = useState<string[]>([])
   const [checklist, setChecklist] = useState<{ items: any[]; checkedItems: string[] } | null>(null)
   const [isFinished, setIsFinished] = useState(false)
@@ -116,6 +116,7 @@ function PlanPageContent() {
             const data = result.data
             setFeeling(data.feeling)
             setSelectedMoods(data.selected_moods || [])
+            setSelectedCuisines(data.selected_cuisines || [])
             setCustomIdeas(data.custom_ideas || [])
             setSelectedLocations(data.selected_locations || { saturday: [], sunday: [] })
             setChecklist(data.checklist || null)
@@ -137,15 +138,16 @@ function PlanPageContent() {
   const hasSaturday = selectedLocations.saturday.length > 0
   const [hasSaturdayInDB, setHasSaturdayInDB] = useState(false)
 
-  // Kiểm tra xem đã có thứ 7 trong DB chưa (khi tạo mới)
+  // Kiểm tra xem đã có thứ 7 trong DB chưa (khi tạo mới) - sử dụng plan_day
   useEffect(() => {
     if (!editId) {
       fetch("/api/selections")
         .then((res) => res.json())
         .then((result) => {
           if (result.data) {
+            // Kiểm tra dựa vào plan_day thay vì selected_locations
             const hasSaturday = result.data.some((sel: any) => 
-              sel.selected_locations?.saturday && sel.selected_locations.saturday.length > 0
+              sel.plan_day === "saturday" || sel.plan_day === "both"
             )
             setHasSaturdayInDB(hasSaturday)
             if (hasSaturday) {
@@ -172,11 +174,28 @@ function PlanPageContent() {
     setSelectedMoods((prev) => (prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]))
   }
 
+  const toggleCuisine = (id: string) => {
+    setSelectedCuisines((prev) => (prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]))
+  }
+
   const removeIdea = (index: number) => {
     setCustomIdeas(customIdeas.filter((_, i) => i !== index))
   }
 
-  const getLocationById = (id: string) => locations.find((loc) => loc.id === id)
+  const getLocationById = (id: string) => {
+    // Handle custom locations (prefixed with "custom_")
+    if (id.startsWith("custom_")) {
+      const customName = id.replace("custom_", "")
+      return {
+        id,
+        name: customName,
+        category: "custom",
+        description: `Địa điểm tùy chỉnh: ${customName}`,
+        tags: ["tùy chỉnh"],
+      }
+    }
+    return locations.find((loc) => loc.id === id)
+  }
 
   const addLocation = (locationId: string) => {
     const location = getLocationById(locationId)
@@ -189,7 +208,10 @@ function PlanPageContent() {
     }
 
     const newIndex = currentLocations.length
-    const autoTime = generateAutoTime(newIndex, location, currentLocations.length + 1, activeDay)
+    // For custom locations, use a simple time suggestion
+    const autoTime = location.category === "custom" 
+      ? "Linh hoạt"
+      : generateAutoTime(newIndex, location, currentLocations.length + 1, activeDay)
 
     setSelectedLocations((prev) => ({
       ...prev,
@@ -198,10 +220,20 @@ function PlanPageContent() {
     setShowLocationPicker(false)
   }
 
+  const addCustomLocation = (locationName: string) => {
+    const customLocationId = `custom_${locationName.trim()}`
+    addLocation(customLocationId)
+  }
+
   const reorderTimes = (dayLocations: SelectedLocation[]) => {
     return dayLocations.map((loc, index) => {
       const location = getLocationById(loc.locationId)
       if (!location) return loc
+
+      // Don't auto-generate time for custom locations
+      if (location.category === "custom") {
+        return loc
+      }
 
       if (!loc.time) {
         const newTime = generateAutoTime(index, location, dayLocations.length, activeDay)
@@ -244,6 +276,7 @@ function PlanPageContent() {
         body: JSON.stringify({
           feeling,
           selectedMoods,
+          selectedCuisines,
           customIdeas,
           selectedLocations,
           checklist: checklist || { items: [], checkedItems: [] },
@@ -342,8 +375,6 @@ function PlanPageContent() {
             </p>
           </div>
 
-          <WeatherDisplay />
-
           <section className="pt-6 md:pt-8 pb-6 md:pb-8 border-t border-border/20 space-y-4 md:space-y-6">
             <div>
               <CountdownTimer />
@@ -373,6 +404,7 @@ function PlanPageContent() {
             activeDay={activeDay}
             onShowPicker={setShowLocationPicker}
             onAddLocation={addLocation}
+            onAddCustomLocation={addCustomLocation}
           />
 
           <SelectedLocationsList
@@ -385,8 +417,10 @@ function PlanPageContent() {
 
         <FoodMoodsSelector
           selectedMoods={selectedMoods}
+          selectedCuisines={selectedCuisines}
           customIdeas={customIdeas}
           onToggleMood={toggleMood}
+          onToggleCuisine={toggleCuisine}
           onAddIdea={(idea) => setCustomIdeas([...customIdeas, idea])}
           onRemoveIdea={removeIdea}
         />
@@ -410,8 +444,8 @@ function PlanPageContent() {
             />
           </div>
         </section>
-
-        <PlanFooter feeling={feeling} onSubmit={handleSubmit} />
+`
+        <PlanFooter onSubmit={handleSubmit} />
       </div>
     </main>
   )

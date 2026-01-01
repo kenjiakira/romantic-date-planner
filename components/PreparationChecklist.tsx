@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Check, Plus, X, Luggage, Umbrella, Camera, Heart, Sun, Droplets } from "lucide-react"
+import { Check, Plus, X, Luggage, Camera, Heart, Droplets } from "lucide-react"
 
 type ChecklistItem = {
   id: string
   label: string
   icon: React.ReactNode
-  category: "essential" | "comfort" | "activity" | "weather"
+  category: "essential" | "comfort" | "activity"
 }
 
 const defaultItems: ChecklistItem[] = [
@@ -31,18 +31,6 @@ const defaultItems: ChecklistItem[] = [
     category: "essential",
   },
   {
-    id: "umbrella",
-    label: "Ô/dù",
-    icon: <Umbrella className="w-4 h-4" />,
-    category: "weather",
-  },
-  {
-    id: "sunscreen",
-    label: "Kem chống nắng",
-    icon: <Sun className="w-4 h-4" />,
-    category: "weather",
-  },
-  {
     id: "water",
     label: "Nước uống",
     icon: <Droplets className="w-4 h-4" />,
@@ -59,7 +47,7 @@ const defaultItems: ChecklistItem[] = [
 type SerializableChecklistItem = {
   id: string
   label: string
-  category: "essential" | "comfort" | "activity" | "weather"
+  category: "essential" | "comfort" | "activity"
 }
 
 type PreparationChecklistProps = {
@@ -97,14 +85,6 @@ export function PreparationChecklist({ selectedLocations, getLocationById, onChe
       if (!location) return
 
       if (location.category === "outdoor" || location.tags.includes("ngoài trời")) {
-        if (!items.find((i) => i.id === "sunscreen")) {
-          suggestions.push({
-            id: "sunscreen",
-            label: "Kem chống nắng",
-            icon: <Sun className="w-4 h-4" />,
-            category: "weather",
-          })
-        }
         if (!items.find((i) => i.id === "water")) {
           suggestions.push({
             id: "water",
@@ -179,7 +159,6 @@ export function PreparationChecklist({ selectedLocations, getLocationById, onChe
     essential: { label: "Cần thiết", color: "text-red-400/80" },
     comfort: { label: "Thoải mái", color: "text-blue-400/80" },
     activity: { label: "Hoạt động", color: "text-purple-400/80" },
-    weather: { label: "Thời tiết", color: "text-amber-400/80" },
   }
 
   const groupedItems = items.reduce(

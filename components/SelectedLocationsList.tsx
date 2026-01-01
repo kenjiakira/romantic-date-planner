@@ -98,9 +98,16 @@ export function SelectedLocationsList({
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-                  <p className="text-lg md:text-xl text-muted-foreground/85 leading-relaxed font-light text-pretty">
-                    {location.description}
-                  </p>
+                  {location.category !== "custom" && (
+                    <p className="text-lg md:text-xl text-muted-foreground/85 leading-relaxed font-light text-pretty">
+                      {location.description}
+                    </p>
+                  )}
+                  {location.category === "custom" && (
+                    <p className="text-base md:text-lg text-muted-foreground/70 leading-relaxed font-light italic">
+                      Địa điểm tùy chỉnh của bạn
+                    </p>
+                  )}
                   {location.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 pt-2">
                       {location.tags.map((tag) => (

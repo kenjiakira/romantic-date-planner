@@ -7,6 +7,81 @@ import type React from "react"
 
 const MAX_IDEA_LENGTH = 50
 
+const getCuisineImage = (cuisineId: string): string | null => {
+  const imageMap: Record<string, string> = {
+    vietnamese: "/images/vietnam-food.jpg",
+    japanese: "/images/japan-food.jpg",
+    korean: "/images/korea-food.jpg",
+    thai: "/images/thai-food.jpg",
+    chinese: "/images/chinese-food.jpeg",
+    western: "/images/us-food.webp",
+    italian: "/images/italian-food.avif",
+    french: "/images/french-food.webp",
+  }
+  return imageMap[cuisineId] || null
+}
+
+const getFoodMoodImage = (moodId: string): string | null => {
+  const imageMap: Record<string, string> = {
+    casual: "/images/casual.webp",
+    peaceful: "/images/cofe.avif", 
+    shared: "/images/street-food.jpg", 
+    rest: "/images/home.avif",
+  }
+  return imageMap[moodId] || null
+}
+
+const cuisines = [
+  {
+    id: "vietnamese",
+    name: "Việt Nam",
+    description: "Phở, bún chả, bánh mì, cơm tấm...",
+    tags: ["quen thuộc", "đậm đà", "đa dạng"],
+  },
+  {
+    id: "japanese",
+    name: "Nhật Bản",
+    description: "Sushi, ramen, udon, tempura...",
+    tags: ["tinh tế", "thanh đạm", "tươi ngon"],
+  },
+  {
+    id: "korean",
+    name: "Hàn Quốc",
+    description: "BBQ, kimchi, bibimbap, tteokbokki...",
+    tags: ["đậm vị", "nóng hổi", "đa dạng"],
+  },
+  {
+    id: "thai",
+    name: "Thái Lan",
+    description: "Tom yum, pad thai, green curry...",
+    tags: ["cay nồng", "chua ngọt", "đậm đà"],
+  },
+  {
+    id: "chinese",
+    name: "Trung Hoa",
+    description: "Dim sum, lẩu, mì xào, vịt quay...",
+    tags: ["phong phú", "đa dạng", "nhiều món"],
+  },
+  {
+    id: "western",
+    name: "Âu Mỹ",
+    description: "Pizza, pasta, burger, steak...",
+    tags: ["quen thuộc", "no bụng", "dễ ăn"],
+  },
+  {
+    id: "italian",
+    name: "Ý",
+    description: "Pasta, pizza, risotto, tiramisu...",
+    tags: ["lãng mạn", "tinh tế", "no bụng"],
+  },
+  {
+    id: "french",
+    name: "Pháp",
+    description: "Bánh mì, croissant, escargot...",
+    tags: ["tinh tế", "lãng mạn", "đặc biệt"],
+  },
+] as const
+
 const foodMoods = [
   {
     id: "casual",
@@ -36,16 +111,20 @@ const foodMoods = [
 
 type FoodMoodsSelectorProps = {
   selectedMoods: string[]
+  selectedCuisines?: string[]
   customIdeas: string[]
   onToggleMood: (id: string) => void
+  onToggleCuisine?: (id: string) => void
   onAddIdea: (idea: string) => void
   onRemoveIdea: (index: number) => void
 }
 
 export function FoodMoodsSelector({
   selectedMoods,
+  selectedCuisines = [],
   customIdeas,
   onToggleMood,
+  onToggleCuisine,
   onAddIdea,
   onRemoveIdea,
 }: FoodMoodsSelectorProps) {
@@ -109,6 +188,7 @@ export function FoodMoodsSelector({
       >
         {foodMoods.map((mood) => {
           const isSelected = selectedMoods.includes(mood.id)
+          const imagePath = getFoodMoodImage(mood.id)
           return (
             <button
               key={mood.id}
@@ -117,26 +197,43 @@ export function FoodMoodsSelector({
               aria-label={`${mood.label}: ${mood.flavor}${isSelected ? " (đã chọn)" : ""}`}
               className={`group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] overflow-hidden transition-all duration-700 text-left sparkle-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 border-2 min-h-[140px] md:min-h-[160px] ${
                 isSelected
-                  ? "scale-[1.02] romantic-glow border-primary/40 shadow-lg bg-accent/20"
+                  ? "scale-[1.02] romantic-glow border-primary/40 shadow-lg"
                   : "hover:scale-[1.01] glass-romantic border-border/50 hover:border-primary/30 active:scale-[0.98]"
               }`}
+              style={
+                imagePath
+                  ? {
+                      backgroundImage: `url(${imagePath})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }
+                  : undefined
+              }
             >
+              {/* Overlay for better text readability */}
               <div
-                className={`absolute inset-0 opacity-10 transition-opacity duration-700 ${mood.color} ${
-                  isSelected ? "opacity-25" : "group-hover:opacity-18"
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  isSelected
+                    ? imagePath
+                      ? "bg-black/60"
+                      : "bg-black/40"
+                    : imagePath
+                    ? "bg-black/60 group-hover:bg-black/70"
+                    : "bg-black/50 group-hover:bg-black/60"
                 }`}
                 aria-hidden="true"
               />
               <div className="relative z-10 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm md:text-sm tracking-widest uppercase font-sans text-muted-foreground/90 font-semibold">
+                  <span className="text-sm md:text-sm tracking-widest uppercase font-sans text-white drop-shadow-lg font-semibold">
                     {mood.label}
                   </span>
                   {isSelected && (
                     <Heart className="w-5 h-5 md:w-4 md:h-4 text-primary fill-primary" aria-hidden="true" />
                   )}
                 </div>
-                <p className="text-base md:text-lg italic font-light leading-snug">{mood.flavor}</p>
+                <p className="text-base md:text-lg italic font-light leading-snug text-white drop-shadow-md">{mood.flavor}</p>
               </div>
               {isSelected && (
                 <motion.div
@@ -149,6 +246,94 @@ export function FoodMoodsSelector({
           )
         })}
       </div>
+
+      {/* Cuisine Selection Section */}
+      {onToggleCuisine && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-6 md:space-y-8"
+        >
+          <div className="text-center space-y-2">
+            <h3 className="text-xs uppercase tracking-[0.4em] text-muted-foreground/80 font-medium">
+              Loại Món Ăn
+            </h3>
+            <p className="text-sm text-muted-foreground/80 italic px-4">
+              Chọn các loại món ăn em muốn thử cuối tuần này
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto px-4 md:px-0">
+            {cuisines.map((cuisine) => {
+              const isSelected = selectedCuisines.includes(cuisine.id)
+              const imagePath = getCuisineImage(cuisine.id)
+              return (
+                <button
+                  key={cuisine.id}
+                  onClick={() => onToggleCuisine(cuisine.id)}
+                  className={`relative p-4 md:p-5 rounded-2xl border-2 text-left transition-all duration-300 min-h-[120px] md:min-h-[140px] overflow-hidden group ${
+                    isSelected
+                      ? "border-primary/50 shadow-md scale-[1.02]"
+                      : "border-border/50 hover:border-primary/40 hover:shadow-md active:scale-[0.98]"
+                  }`}
+                  style={
+                    imagePath
+                      ? {
+                          backgroundImage: `url(${imagePath})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat",
+                        }
+                      : undefined
+                  }
+                >
+                  {/* Overlay for better text readability */}
+                  <div
+                    className={`absolute inset-0 transition-opacity duration-300 ${
+                      isSelected
+                        ? imagePath
+                          ? "bg-black/70"
+                          : "bg-accent/30"
+                        : imagePath
+                        ? "bg-black/60 group-hover:bg-black/70"
+                        : "bg-accent/20 group-hover:bg-accent/30"
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <div className="relative z-10 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm md:text-base font-semibold text-white drop-shadow-lg">{cuisine.name}</h4>
+                      {isSelected && (
+                        <Heart className="w-4 h-4 text-primary fill-primary" aria-hidden="true" />
+                      )}
+                    </div>
+                    <p className="text-xs md:text-sm text-white/90 italic leading-relaxed line-clamp-2 drop-shadow-md">
+                      {cuisine.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {cuisine.tags.slice(0, 2).map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[9px] px-1.5 py-0.5 rounded-full bg-white/20 backdrop-blur-sm text-white uppercase tracking-wider font-semibold border border-white/30"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {isSelected && (
+                    <motion.div
+                      layoutId={`cuisine-border-${cuisine.id}`}
+                      className="absolute inset-0 border-2 border-primary/40 rounded-2xl"
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </motion.div>
+      )}
 
       <div className="max-w-md mx-auto space-y-6 md:space-y-8 pt-6 md:pt-8 px-4 md:px-0">
         <div className="space-y-4">

@@ -11,14 +11,14 @@ export const locations: Location[] = [
     id: "second_home",
     name: "Nhà thứ 2",
     category: "safe_place",
-    description: "Game center quen thuộc, chỗ hay nằm nghỉ, không cần làm gì.",
+    description: "Chỗ ý ý.",
     tags: ["quen thuộc", "nghỉ ngơi", "an toàn", "không áp lực", "base"],
   },
   {
     id: "aeon_xuan_thuy",
     name: "AEON Mall Xuân Thủy",
     category: "mall",
-    description: "Đi dạo, ăn uống, xem phim, không cần mục tiêu.",
+    description: "Đi dạo, ăn uống, xem phim, v...v.",
     tags: ["trong nhà", "ăn uống", "xem phim", "đi dạo"],
   },
   {
@@ -39,15 +39,8 @@ export const locations: Location[] = [
     id: "quiet_cafe",
     name: "Quán cà phê yên tĩnh",
     category: "cafe",
-    description: "Ngồi nói chuyện, không vội.",
+    description: "Ngồi nói chuyện, v...v.",
     tags: ["cafe", "trò chuyện", "nhẹ"],
-  },
-  {
-    id: "rooftop_cafe",
-    name: "Cà phê rooftop",
-    category: "cafe",
-    description: "Buổi tối, gió mát, ngắm thành phố.",
-    tags: ["buổi tối", "view", "lãng mạn"],
   },
   {
     id: "park_walk",
@@ -81,8 +74,29 @@ export const locations: Location[] = [
     id: "random_walk",
     name: "Đi đâu đó không định trước",
     category: "free",
-    description: "Lên xe rồi tính tiếp.",
+    description: "Đi rồi tính tiếp.",
     tags: ["tự do", "không kế hoạch"],
+  },
+  {
+    id: "bookstore",
+    name: "Hiệu sách / Thư viện",
+    category: "quiet",
+    description: "Ngồi đọc sách, yên tĩnh.",
+    tags: ["yên tĩnh", "đọc sách", "ngồi lâu"],
+  },
+  {
+    id: "art_gallery",
+    name: "Triển lãm / Bảo tàng",
+    category: "culture",
+    description: "Xem tranh, đi chậm.",
+    tags: ["văn hóa", "yên tĩnh", "chụp ảnh"],
+  },
+  {
+    id: "picnic",
+    name: "Dã ngoại nhẹ",
+    category: "outdoor",
+    description: "Ngồi ngoài trời, ăn nhẹ, thư giãn.",
+    tags: ["ngoài trời", "ăn uống", "thư giãn"],
   },
 ]
 
@@ -115,5 +129,60 @@ export function getLocationById(id: string): Location | undefined {
 
 export function getMoodById(id: string) {
   return foodMoods.find((mood) => mood.id === id)
+}
+
+export const cuisines = [
+  {
+    id: "vietnamese",
+    name: "Việt Nam",
+    description: "Phở, bún chả, bánh mì, cơm tấm...",
+    tags: ["quen thuộc", "đậm đà", "đa dạng"],
+  },
+  {
+    id: "japanese",
+    name: "Nhật Bản",
+    description: "Sushi, ramen, udon, tempura...",
+    tags: ["tinh tế", "thanh đạm", "tươi ngon"],
+  },
+  {
+    id: "korean",
+    name: "Hàn Quốc",
+    description: "BBQ, kimchi, bibimbap, tteokbokki...",
+    tags: ["đậm vị", "nóng hổi", "đa dạng"],
+  },
+  {
+    id: "thai",
+    name: "Thái Lan",
+    description: "Tom yum, pad thai, green curry...",
+    tags: ["cay nồng", "chua ngọt", "đậm đà"],
+  },
+  {
+    id: "chinese",
+    name: "Trung Hoa",
+    description: "Dim sum, lẩu, mì xào, vịt quay...",
+    tags: ["phong phú", "đa dạng", "nhiều món"],
+  },
+  {
+    id: "western",
+    name: "Âu Mỹ",
+    description: "Pizza, pasta, burger, steak...",
+    tags: ["quen thuộc", "no bụng", "dễ ăn"],
+  },
+  {
+    id: "italian",
+    name: "Ý",
+    description: "Pasta, pizza, risotto, tiramisu...",
+    tags: ["lãng mạn", "tinh tế", "no bụng"],
+  },
+  {
+    id: "french",
+    name: "Pháp",
+    description: "Bánh mì, croissant, escargot...",
+    tags: ["tinh tế", "lãng mạn", "đặc biệt"],
+  },
+] as const
+
+export function getCuisineById(id: string) {
+  return cuisines.find((cuisine) => cuisine.id === id)
 }
 

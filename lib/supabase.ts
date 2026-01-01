@@ -26,6 +26,7 @@ export type Database = {
             items: Array<{ id: string; label: string; category: string; iconType?: string }>
             checkedItems: string[]
           }
+          plan_day: string | null
           created_at: string
           updated_at: string
         }
@@ -42,6 +43,7 @@ export type Database = {
             items: Array<{ id: string; label: string; category: string; iconType?: string }>
             checkedItems: string[]
           }
+          plan_day?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -54,6 +56,7 @@ export type Database = {
             saturday: Array<{ locationId: string; time: string }>
             sunday: Array<{ locationId: string; time: string }>
           }
+          plan_day?: string | null
           created_at?: string
           updated_at?: string
         }
