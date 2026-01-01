@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeft, Heart } from "lucide-react"
@@ -85,7 +85,7 @@ const generateAutoTime = (
   return timeSlots[index % timeSlots.length] || "Linh hoạt"
 }
 
-export default function PlanPage() {
+function PlanPageContent() {
   const searchParams = useSearchParams()
   const editId = searchParams.get("edit")
   
@@ -414,5 +414,26 @@ export default function PlanPage() {
         <PlanFooter feeling={feeling} onSubmit={handleSubmit} />
       </div>
     </main>
+  )
+}
+
+export default function PlanPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen romantic-gradient text-foreground font-serif selection:bg-primary/20 flex flex-col items-center justify-center p-6 text-center relative">
+          <div className="fixed inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-0" />
+          <div className="max-w-xl space-y-12 relative z-10">
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-5xl font-light italic leading-tight text-pretty romantic-glow-text">
+                Đang tải...
+              </h1>
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <PlanPageContent />
+    </Suspense>
   )
 }
