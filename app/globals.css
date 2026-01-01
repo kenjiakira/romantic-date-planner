@@ -1,0 +1,319 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Updated to romantic, warm neutral tones with better contrast */
+  --background: oklch(0.99 0.005 0); /* Nearly white for better contrast */
+  --foreground: oklch(0.18 0.025 25); /* Darker brown/rose for better readability */
+  --card: oklch(0.99 0.005 0);
+  --card-foreground: oklch(0.18 0.025 25);
+  --popover: oklch(0.99 0.005 0);
+  --popover-foreground: oklch(0.18 0.025 25);
+  --primary: oklch(0.65 0.12 15); /* Muted Rose */
+  --primary-foreground: oklch(0.98 0.01 45);
+  --secondary: oklch(0.92 0.03 30); /* Warm Sand */
+  --secondary-foreground: oklch(0.18 0.025 25);
+  --muted: oklch(0.92 0.03 30);
+  --muted-foreground: oklch(0.35 0.04 25); /* Darker for better contrast */
+  --accent: oklch(0.85 0.08 15); /* Soft Blush */
+  --accent-foreground: oklch(0.18 0.025 25);
+  --destructive: oklch(0.5 0.15 25);
+  --destructive-foreground: oklch(0.98 0.01 45);
+  --border: oklch(0.88 0.02 45);
+  --input: oklch(0.88 0.02 45);
+  --ring: oklch(0.65 0.12 15);
+  --radius: 1rem;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  /* Added serif font for the romantic atmosphere */
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-serif: "Playfair Display", "Times New Roman", serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Romantic gradient background */
+@layer utilities {
+  .romantic-gradient {
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.98 0.04 45 / 0.3), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, oklch(0.92 0.05 20 / 0.25), transparent),
+      radial-gradient(ellipse 70% 50% at 20% 100%, oklch(0.95 0.03 15 / 0.2), transparent),
+      linear-gradient(180deg, oklch(0.99 0.005 0) 0%, oklch(0.97 0.01 40) 100%);
+  }
+  
+  .romantic-gradient-animated {
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.98 0.04 45 / 0.3), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, oklch(0.92 0.05 20 / 0.25), transparent),
+      radial-gradient(ellipse 70% 50% at 20% 100%, oklch(0.95 0.03 15 / 0.2), transparent),
+      linear-gradient(180deg, oklch(0.99 0.005 0) 0%, oklch(0.97 0.01 40) 100%);
+    animation: gradient-shift 20s ease infinite;
+    background-size: 200% 200%;
+  }
+  
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .romantic-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: blob-float 25s ease-in-out infinite;
+  }
+  
+  .romantic-blob-1 {
+    width: 500px;
+    height: 500px;
+    background: oklch(0.75 0.1 15);
+    top: -10%;
+    left: -5%;
+    animation-delay: 0s;
+  }
+  
+  .romantic-blob-2 {
+    width: 400px;
+    height: 400px;
+    background: oklch(0.82 0.08 25);
+    bottom: -10%;
+    right: -5%;
+    animation-delay: 7s;
+  }
+  
+  .romantic-blob-3 {
+    width: 350px;
+    height: 350px;
+    background: oklch(0.88 0.06 35);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 14s;
+  }
+  
+  @keyframes blob-float {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -30px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+  
+  /* Floating animation for particles */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px) rotate(0deg);
+      opacity: 0.2;
+    }
+    25% {
+      transform: translateY(-20px) translateX(10px) rotate(5deg);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-40px) translateX(-10px) rotate(-5deg);
+      opacity: 0.25;
+    }
+    75% {
+      transform: translateY(-20px) translateX(5px) rotate(3deg);
+      opacity: 0.3;
+    }
+  }
+  
+  .animate-float {
+    animation: float 20s ease-in-out infinite;
+  }
+  
+  /* Glow effects */
+  .romantic-glow {
+    box-shadow: 
+      0 0 20px oklch(0.65 0.12 15 / 0.2),
+      0 0 40px oklch(0.65 0.12 15 / 0.1),
+      0 0 60px oklch(0.65 0.12 15 / 0.05);
+  }
+  
+  .romantic-glow-text {
+    text-shadow: 
+      0 0 10px oklch(0.65 0.12 15 / 0.3),
+      0 0 20px oklch(0.65 0.12 15 / 0.2),
+      0 0 30px oklch(0.65 0.12 15 / 0.1);
+  }
+  
+  .romantic-glow-hover {
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: box-shadow, transform;
+  }
+  
+  .romantic-glow-hover:hover {
+    box-shadow: 
+      0 0 20px oklch(0.65 0.12 15 / 0.25),
+      0 0 40px oklch(0.65 0.12 15 / 0.12),
+      0 4px 12px oklch(0.65 0.12 15 / 0.08);
+    transform: translateY(-1px);
+  }
+  
+  /* Sparkle effect on hover - optimized */
+  .sparkle-hover {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sparkle-hover::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      oklch(0.65 0.12 15 / 0.15) 50%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  
+  .sparkle-hover:hover::before {
+    opacity: 1;
+  }
+  
+  /* Glassmorphism effect */
+  .glass-romantic {
+    background: oklch(0.99 0.005 0 / 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid oklch(0.88 0.02 45 / 0.3);
+  }
+  
+  /* Subtle pulse animation */
+  @keyframes romantic-pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.02);
+    }
+  }
+  
+  .animate-romantic-pulse {
+    animation: romantic-pulse 3s ease-in-out infinite;
+  }
+  
+  /* Shimmer effect */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(0.65 0.12 15 / 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 3s infinite;
+  }
+}
